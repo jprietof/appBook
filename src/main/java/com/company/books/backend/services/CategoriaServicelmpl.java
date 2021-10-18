@@ -39,5 +39,29 @@ public class CategoriaServicelmpl implements ICategoriaService{
 		}
 		return new ResponseEntity<CategoriaResponseRest>(response, HttpStatus.OK);  //status: 200
 	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public ResponseEntity<CategoriaResponseRest> buscarPorId(Long id) {
+		log.info("Inicio metodo buscarPorId");
+		CategoriaResponseRest response = new CategoriaResponseRest();
+		List<Categoria> list = new ArrayList<>();
+		try {
+			Optional<Categoria> categoria = categoriaDao.findById(id);
+			if(categoria.isPresent()) {
+				list.add(categoria.get());
+				response.getCategoriaResponse().setCategoria(list);
+			}else {
+				log.error("Error en consultar categoria");
+				response.setMetada("Respuesta no ok", "-1", "Categoria no encontrada");
+				return new ResponseEntity<CategoriaResponseRest>(response, HttpStatus.NOT_FOUND);  // status:404
+			}
+		} catch (Exception e) {
+			log.error("Error en consultar categoria");
+			response.setMetada("Respuesta no ok", "-1", "Categoria no encontrada");
+			return new ResponseEntity<CategoriaResponseRest>(response, HttpStatus.INTERNAL_SERVER_ERROR);  // status:500
+		}
+		return new ResponseEntity<CategoriaResponseRest>(response, HttpStatus.OK);  // status:200
+	}
 	
 }
