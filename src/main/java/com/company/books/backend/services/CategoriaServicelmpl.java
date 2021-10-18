@@ -61,6 +61,7 @@ public class CategoriaServicelmpl implements ICategoriaService{
 			response.setMetada("Respuesta no ok", "-1", "Categoria no encontrada");
 			return new ResponseEntity<CategoriaResponseRest>(response, HttpStatus.INTERNAL_SERVER_ERROR);  // status:500
 		}
+		response.setMetada("Respuesta Ok", "00", "Respuesta existosa");
 		return new ResponseEntity<CategoriaResponseRest>(response, HttpStatus.OK);  // status:200
 	}
 	
